@@ -1,18 +1,115 @@
-<form #registerForm="ngForm" (ngSubmit)="register()">
-  <h2 class="text-center text-primary">Sign Up</h2>
-  <hr>
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+  <h2 class="text-center">Регистрация</h2>
+  <hr />
 
   <div class="form-group">
-    <input type="text" class="form-control" required name="username" [(ngModel)]="model.username" placeholder="Username">
+    <label class="control-label" style="margin-right:10px">Я: </label>
+    <label class="radio-inline">
+      <input class="mr-3" type="radio" value="male" formControlName="gender">Мужик
+    </label>
+    <label class="radio-inline ml-3">
+      <input class="mr-3" type="radio" value="female" formControlName="gender">Женщина
+    </label>
   </div>
 
   <div class="form-group">
-    <input type="password" class="form-control" required name="password" [(ngModel)]="model.password" placeholder="Password">
+    <input
+      type="text"
+      [ngClass]="{
+        'is-invalid':
+          registerForm.get('username').errors &&
+          registerForm.get('username').touched
+      }"
+      class="form-control"
+      formControlName="username"
+      placeholder="имя пользователя"
+    />
+    <div class="invalid-feedback">Выберите имя пользователя</div>
+  </div>
+
+  <div class="form-group">
+    <input [ngClass]="{'is-invalid': registerForm.get('knownAs').errors && registerForm.get('knownAs').touched}" class="form-control"
+      placeholder="никнейм" formControlName="knownAs">
+    <div class="invalid-feedback" *ngIf="registerForm.get('knownAs').touched && registerForm.get('knownAs').hasError('required')">Необходимо указать никнейм</div>
+  </div>
+
+  <div class="form-group">
+    <input [ngClass]="{'is-invalid': registerForm.get('dateOfBirth').errors && registerForm.get('dateOfBirth').touched}" class="form-control"
+      placeholder="Дата рождения" formControlName="dateOfBirth" type="text" bsDatepicker [bsConfig]="bsConfig">
+    <div class="invalid-feedback" *ngIf="registerForm.get('dateOfBirth').touched && registerForm.get('dateOfBirth').hasError('required')">Необходимо указать дату рождения</div>
+  </div>
+
+  <div class="form-group">
+    <input [ngClass]="{'is-invalid': registerForm.get('city').errors && registerForm.get('city').touched}" class="form-control"
+      placeholder="Город" formControlName="city">
+    <div class="invalid-feedback" *ngIf="registerForm.get('city').touched && registerForm.get('city').hasError('required')">Необходимо указать город</div>
+  </div>
+
+  <div class="form-group">
+    <input [ngClass]="{'is-invalid': registerForm.get('country').errors && registerForm.get('country').touched}" class="form-control"
+      placeholder="Страна" formControlName="country">
+    <div class="invalid-feedback" *ngIf="registerForm.get('country').touched && registerForm.get('country').hasError('required')">Необходимо указать страну</div>
+  </div>
+
+  <div class="form-group">
+    <input
+      type="password"
+      [ngClass]="{
+        'is-invalid':
+          registerForm.get('password').errors &&
+          registerForm.get('password').touched
+      }"
+      class="form-control"
+      formControlName="password"
+      placeholder="пароль"
+    />
+    <div
+      class="invalid-feedback"
+      *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched">
+      Необходимо указать пароль
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched">
+      Пароль должен быть не меньше 6 символов
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="registerForm.get('password').hasError('maxlength') && registerForm.get('password').touched">
+      Пароль должен быть не больше 12 символов
+    </div>
+  </div>
+
+  <div class="form-group">
+    <input
+      type="password"
+      [ngClass]="{
+        'is-invalid':
+          registerForm.get('confirmPassword').errors &&
+          registerForm.get('confirmPassword').touched ||
+          registerForm.get('confirmPassword').touched && 
+          registerForm.hasError('mismatch')
+      }"
+      class="form-control"
+      formControlName="confirmPassword"
+      placeholder="подтвердите пароль"
+    />
+    <div
+      class="invalid-feedback"
+      *ngIf="registerForm.get('confirmPassword').hasError('required') && registerForm.get('confirmPassword').touched">
+      Необходимо указать пароль
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword').touched">
+      Введенные пароли не совпадают
+    </div>
   </div>
 
   <div class="form-group text-center">
-    <button class="btn btn-success mr-2" type="submit">Register</button>
-    <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
+    <button class="btn btn-success mr-2" [disabled]="!registerForm.valid" type="submit">Зарегистрироваться</button>
+    <button class="btn btn-default" type="button" (click)="cancel()">
+      Отмена
+    </button>
   </div>
-
 </form>
