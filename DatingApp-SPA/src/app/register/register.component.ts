@@ -2,9 +2,10 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { BsDatepickerConfig, BsLocaleService, ruLocale, defineLocale } from 'ngx-bootstrap';
+import { BsDatepickerConfig, defineLocale, ruLocale } from 'ngx-bootstrap';
 import { User } from '../_models/user';
 import { Router } from '@angular/router';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-register',
@@ -18,15 +19,13 @@ export class RegisterComponent implements OnInit {
   bsConfig: Partial<BsDatepickerConfig>;
 
   constructor(private authService: AuthService, private alertify: AlertifyService,
-    private fb: FormBuilder, private localeService: BsLocaleService,
-    private router: Router) { }
+    private fb: FormBuilder, private router: Router, private localeService: BsLocaleService) { }
 
   ngOnInit() {
-    defineLocale('ru', ruLocale);
     this.localeService.use('ru');
     this.bsConfig = {
       containerClass: 'theme-default',
-      showWeekNumbers: false
+      showWeekNumbers: false,
     },
     this.createRegisterForm();
   }

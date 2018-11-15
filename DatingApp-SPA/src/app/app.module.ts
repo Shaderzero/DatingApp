@@ -7,8 +7,9 @@ import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
-import { ruLocale } from 'ngx-bootstrap/locale';
 import { TimeAgoPipe } from 'time-ago-pipe';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ruLocale } from 'ngx-bootstrap/locale';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -36,63 +37,61 @@ import { MessagesResolver } from './_resolvers/messages.resolver';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 export function tokenGetter() {
-    return localStorage.getItem('token');
+   return localStorage.getItem('token');
 }
+
+defineLocale('ru', ruLocale);
 
 @NgModule({
    declarations: [
-      AppComponent,
-      NavComponent,
-      HomeComponent,
-      RegisterComponent,
-      MemberListComponent,
-      ListsComponent,
-      MessagesComponent,
-      MemberCardComponent,
-      MemberDetailComponent,
-      MemberEditComponent,
-      PhotoEditorComponent,
-      TimeAgoPipe,
-      MemberMessagesComponent
+     AppComponent,
+     NavComponent,
+     HomeComponent,
+     RegisterComponent,
+     MemberListComponent,
+     ListsComponent,
+     MessagesComponent,
+     MemberCardComponent,
+     MemberDetailComponent,
+     MemberEditComponent,
+     PhotoEditorComponent,
+     TimeAgoPipe,
+     MemberMessagesComponent
    ],
    imports: [
-      BrowserModule,
-      HttpClientModule,
-      FormsModule,
-      ReactiveFormsModule,
-      BsDropdownModule.forRoot(),
-      BsDatepickerModule.forRoot(),
-      PaginationModule.forRoot(),
-      TabsModule.forRoot(),
-      ButtonsModule.forRoot(),
-      RouterModule.forRoot(appRoutes),
-      NgxGalleryModule,
-      FileUploadModule,
-      JwtModule.forRoot({
-          config: {
-              tokenGetter: tokenGetter,
-              whitelistedDomains: ['localhost:5000'],
-              blacklistedRoutes: ['localhost:5000/api/auth']
-          }
-      })
+     BrowserModule,
+     HttpClientModule,
+     FormsModule,
+     ReactiveFormsModule,
+     BsDropdownModule.forRoot(),
+     BsDatepickerModule.forRoot(),
+     ButtonsModule.forRoot(),
+     PaginationModule.forRoot(),
+     TabsModule.forRoot(),
+     RouterModule.forRoot(appRoutes),
+     NgxGalleryModule,
+     FileUploadModule,
+     JwtModule.forRoot({
+       config: {
+         tokenGetter: tokenGetter,
+         whitelistedDomains: ['localhost:5000'],
+         blacklistedRoutes: ['localhost:5000/api/auth']
+       }
+     })
    ],
    providers: [
-      AuthService,
-      ErrorInterceptorProvider,
-      AlertifyService,
-      AuthGuard,
-      UserService,
-      MemberDetailResolver,
-      MemberListResolver,
-      MemberEditResolver,
-      PreventUnsavedChanges,
-      ListsResolver,
-      MessagesResolver,
-      { provide: ruLocale, useValue: 'ru' }
-   ],
-   bootstrap: [
-      AppComponent
-   ],
+       AuthService,
+       ErrorInterceptorProvider,
+       AlertifyService,
+       AuthGuard,
+       UserService,
+       MemberDetailResolver,
+       MemberListResolver,
+       MemberEditResolver,
+       PreventUnsavedChanges,
+       ListsResolver,
+       MessagesResolver
+     ],
+   bootstrap: [AppComponent]
 })
-
-export class AppModule { }
+export class AppModule {}
